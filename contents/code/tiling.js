@@ -1,9 +1,12 @@
 var clients = workspace.clientList();
 var activeClient;
+var verticalTiles = 2;
+var verticalTilingEnabled = true;
 
 for (var i = 0; i < clients.length; i++) {
 	if (clients[i].active) {
 		activeClient = clients[i];
+		break;
 	}
 }
 
@@ -50,18 +53,21 @@ var isIgnored = function (client) {
 };
 
 var resizeAndMove = function (size_dividend, size_multiple, pos_dividend, pos_index) {
-	print("Ultrawide tiling called to resize and move with args: " + size_dividend + ", " + size_multiple + ", " + pos_dividend + ", " + pos_index);
+	print("Ultrawide tiling called to resize and move " + activeClient.caption + " with args: " + size_dividend + ", " + size_multiple + ", " + pos_dividend + ", " + pos_index);
 	if (isIgnored(activeClient)) {
-		print("client ignored, not resizing or moving");
+		print(activeClient.caption + " ignored, not resizing or moving");
 		return;
 	}
 
+	// HACK: unset "maximized" since kwin doesn't do it when you resize an already-maximized window with .geometry
+	activeClient.setMaximize(false, false);
+
 	var workGeo = workspace.clientArea(KWin.PlacementArea, activeClient.screen, activeClient.desktop);
 	var geo = activeClient.geometry;
-
-	// vertical geometry should be top-to-bottom
-	geo.y = workGeo.y;
-	geo.height = workGeo.height;
+	print("current geometry of " + activeClient.caption + " is x: " + geo.x + " y: " + geo.y + " width: " + geo.width + " height: " + geo.height);
+	
+	var originalX = geo.x;
+	var originalWidth = geo.width;
 
 	// horizontal position (from left edge)
 	geo.x = (workGeo.width / pos_dividend) * pos_index;
@@ -69,17 +75,33 @@ var resizeAndMove = function (size_dividend, size_multiple, pos_dividend, pos_in
 	// width
 	geo.width = (workGeo.width / size_dividend) * size_multiple;
 
-	// HACK: unset "maximized" since kwin doesn't do it when you resize an already-maximized window with .geometry
-	activeClient.setMaximize(false, false);
+	if (verticalTilingEnabled
+			&& geo.x == originalX
+			&& geo.width == originalWidth) {
+//		print("vertical tiling originalX: " + originalX + ", newX: " + geo.x + ", originalWidth: " + originalWidth + ", newWidth: " + geo.width);
+		
+		var heightPerTile = workGeo.height / verticalTiles;
+		if (geo.height == workGeo.height && geo.y == workGeo.y) {
+			geo.height = heightPerTile;
+		} else if (geo.height == heightPerTile && geo.y == workGeo.y) {
+			geo.y = workGeo.y + heightPerTile;
+		} else {
+			geo.y = workGeo.y;
+			geo.height = workGeo.height;
+		}
+	} else {
+		// vertical geometry should be top-to-bottom
+		geo.y = workGeo.y;
+		geo.height = workGeo.height;
+	}
 
-	print("new geometry is x: " + geo.x + " y: " + geo.y + " width: " + geo.width + " height: " + geo.height);
-	activeClient.geometry = geo;
+	print("new geometry of " + activeClient.caption + " is x: " + geo.x + " y: " + geo.y + " width: " + geo.width + " height: " + geo.height);
 }
 
 var maximize = function () {
 	print("Ultrawide tiling called to maximize window");
 	if (isIgnored(activeClient)) {
-		print("client ignored, not maximizing");
+		print(activeClient.caption + " ignored, not maximizing");
 		return;
 	}
 	activeClient.setMaximize(true, true);
