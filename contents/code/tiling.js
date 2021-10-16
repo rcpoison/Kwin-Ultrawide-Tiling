@@ -135,6 +135,12 @@ registerShortcut("ULTRAWIDE TILING: 2/3 Left", "ULTRAWIDE TILING: 2/3 Left", "",
 registerShortcut("ULTRAWIDE TILING: 2/3 Center", "ULTRAWIDE TILING: 2/3 Center", "", function () {resizeAndMove(3, 2, 6, 1)});
 registerShortcut("ULTRAWIDE TILING: 2/3 Right", "ULTRAWIDE TILING: 2/3 Right", "", function () {resizeAndMove(3, 2, 6, 2)});
 
+// quarters
+registerShortcut("ULTRAWIDE TILING: 1/4 Left", "ULTRAWIDE TILING: 1/4 Left", "", function () {resizeAndMove(4, 1, 4, 0)});
+registerShortcut("ULTRAWIDE TILING: 1/4 Left-Center", "ULTRAWIDE TILING: 1/4 Left-Center", "", function () {resizeAndMove(4, 1, 4, 1)});
+registerShortcut("ULTRAWIDE TILING: 1/4 Right-Center", "ULTRAWIDE TILING: 1/4 Right-Center", "", function () {resizeAndMove(4, 1, 4, 2)});
+registerShortcut("ULTRAWIDE TILING: 1/4 Right", "ULTRAWIDE TILING: 1/4 Right", "", function () {resizeAndMove(4, 1, 4, 3)});
+
 // sixths
 registerShortcut("ULTRAWIDE TILING: 1/6 Left-Left", "ULTRAWIDE TILING: 1/6 Left-Left", "", function () {resizeAndMove(6, 1, 6, 0)});
 registerShortcut("ULTRAWIDE TILING: 1/6 Left-Center", "ULTRAWIDE TILING: 1/6 Left-Center", "", function () {resizeAndMove(6, 1, 6, 1)});
