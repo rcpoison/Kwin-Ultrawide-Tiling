@@ -33,50 +33,20 @@ var isIgnored = function(client) {
 	} else if (client.resourceClass.toString() != "steam" && client.caption == "Steam") {
 		return true;
 	}
-	if (client.specialWindow == true) {
-		return true;
-	}
-	if (client.desktopWindow == true) {
-		return true;
-	}
-	if (client.dock == true) {
-		return true;
-	}
-	if (client.toolbar == true) {
-		return true;
-	}
-	if (client.menu == true) {
-		return true;
-	}
-	if (client.dialog == true) {
-		return true;
-	}
-	if (client.splash == true) {
-		return true;
-	}
-	if (client.utility == true) {
-		return true;
-	}
-	if (client.dropdownMenu == true) {
-		return true;
-	}
-	if (client.popupMenu == true) {
-		return true;
-	}
-	if (client.tooltip == true) {
-		return true;
-	}
-	if (client.notification == true) {
-		return true;
-	}
-	if (client.comboBox == true) {
-		return true;
-	}
-	if (client.dndIcon == true) {
-		return true;
-	}
-
-    return false;
+	return client.specialWindow 
+		|| client.desktopWindow
+		|| client.dock
+		|| client.toolbar
+		|| client.menu
+		|| client.dialog
+		|| client.splash
+		|| client.utility
+		|| client.dropdownMenu
+		|| client.popupMenu
+		|| client.tooltip
+		|| client.notification
+		|| client.comboBox
+		|| client.dndIcon;
 };
 
 var resizeAndMove = function(size_dividend, size_multiple, pos_dividend, pos_index){
