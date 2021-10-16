@@ -56,7 +56,7 @@ var resizeAndMove = function(size_dividend, size_multiple, pos_dividend, pos_ind
     return;
   }
 
-  var workGeo = workspace.clientArea(KWin.PlacementArea, activeClient.screen, 1);
+  var workGeo = workspace.clientArea(KWin.PlacementArea, activeClient.screen, activeClient.desktop);
   var geo = activeClient.geometry;
 
   // vertical geometry should be top-to-bottom
